@@ -4,7 +4,7 @@ import logoImage from './assets/descarga.png';
 import { useState, useEffect } from 'react';
 import { trackWhatsAppClick } from './utils/mixpanel';
 import { useAnalytics } from './hooks/useAnalytics';
-import { forceTestEvent, checkMixpanelStatus, sendManualEvent } from './utils/debug';
+
 
 // Declaración global para Facebook Pixel
 declare global {
@@ -44,24 +44,7 @@ function App() {
   // Usar hook de analytics para manejar Mixpanel de manera segura
   useAnalytics();
   
-  // Funciones para probar Mixpanel manualmente (solo en desarrollo)
-  const testMixpanel = () => {
-    if (import.meta.env.DEV) {
-      forceTestEvent();
-    }
-  };
-  
-  const checkStatus = () => {
-    if (import.meta.env.DEV) {
-      checkMixpanelStatus();
-    }
-  };
-  
-  const sendManual = () => {
-    if (import.meta.env.DEV) {
-      sendManualEvent();
-    }
-  };
+
 
   // Meta Pixel Code
   useEffect(() => {
@@ -294,29 +277,7 @@ function App() {
           <span>¡QUIERO MI BONO!</span>
         </a>
 
-        {/* Botones de prueba para Mixpanel (solo en desarrollo) */}
-        {import.meta.env.DEV && (
-          <div className="mt-4 space-y-2">
-            <button
-              onClick={testMixpanel}
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mr-2"
-            >
-              🧪 Test Mixpanel Event
-            </button>
-            <button
-              onClick={checkStatus}
-              className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2"
-            >
-              🔍 Check Status
-            </button>
-            <button
-              onClick={sendManual}
-              className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
-            >
-              📤 Send Manual Event
-            </button>
-          </div>
-        )}
+
 
         {/* Clientes ganando - Oculto en notebooks */}
         {!isNotebook && (

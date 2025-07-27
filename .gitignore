@@ -22,3 +22,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables and sensitive data
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Documentation files that might contain sensitive data
+*CONFIGURACION*.md
+*ACTUALIZADA*.md
+*TOKENS*.md
+*SENSITIVE*.md
