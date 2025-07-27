@@ -252,7 +252,7 @@ function App() {
 
         {/* Botón WhatsApp */}
         <a 
-          href={`https://wa.me/549${getRandomWhatsAppNumber()}?text=${encodeURIComponent('Quiero jugar! Y mi bono del 50%')}`}
+          href={`https://wa.me/549${getRandomWhatsAppNumber()}?text=${encodeURIComponent('Quiero mi bono del 50% y jugar♥')}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {
