@@ -58,7 +58,7 @@ function App() {
       t.src='https://connect.facebook.net/en_US/fbevents.js';
       s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script');
-      fbq('init', '1053176933005691');
+      fbq('init', '1139320498000339');
       fbq('track', 'PageView');
     `;
     document.head.appendChild(script);
@@ -69,7 +69,7 @@ function App() {
     img.height = 1;
     img.width = 1;
     img.style.display = 'none';
-    img.src = 'https://www.facebook.com/tr?id=1053176933005691&ev=PageView&noscript=1';
+    img.src = 'https://www.facebook.com/tr?id=1139320498000339&ev=PageView&noscript=1';
     noscript.appendChild(img);
     document.head.appendChild(noscript);
 
@@ -252,7 +252,7 @@ function App() {
 
         {/* Botón WhatsApp */}
         <a 
-          href={`https://wa.me/549${getRandomWhatsAppNumber()}?text=${encodeURIComponent('Quiero jugar! Y mi bono del 50%💪')}`}
+          href={`https://wa.me/549${getRandomWhatsAppNumber()}?text=${encodeURIComponent('Quiero jugar! Y mi bono del 50%')}`}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {

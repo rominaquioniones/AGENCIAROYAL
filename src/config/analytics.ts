@@ -1,11 +1,11 @@
 // Configuración de Analytics
 export const ANALYTICS_CONFIG = {
   mixpanel: {
-    token: import.meta.env.VITE_MIXPANEL_TOKEN,
+    token: '673cbf38758fedf65031113726220b66',
     debug: import.meta.env.DEV,
   },
   facebook: {
-    pixelId: import.meta.env.VITE_FACEBOOK_PIXEL_ID || '1053176933005691',
+    pixelId: '1139320498000339',
   },
   events: {
     pageView: 'Page View',
@@ -21,7 +21,7 @@ export const ANALYTICS_CONFIG = {
 
 // Verificar si Mixpanel está configurado
 export const isMixpanelConfigured = (): boolean => {
-  return !!ANALYTICS_CONFIG.mixpanel.token && ANALYTICS_CONFIG.mixpanel.token !== 'TU_TOKEN_AQUI';
+  return !!ANALYTICS_CONFIG.mixpanel.token;
 };
 
 // Verificar si Facebook Pixel está configurado
