@@ -69,14 +69,39 @@ function App() {
     img.height = 1;
     img.width = 1;
     img.style.display = 'none';
-    img.src = 'https://www.facebook.com/tr?id=1139320498000339&ev=PageView&noscript=1';
+    img.src = 'https://www.facebook.net/tr?id=1139320498000339&ev=PageView&noscript=1';
     noscript.appendChild(img);
     document.head.appendChild(noscript);
+
+    // Trackear eventos de engagement para optimizar alcance
+    const trackEngagement = () => {
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('track', 'ViewContent');
+      }
+    };
+
+    // Trackear después de 3 segundos (engagement)
+    const engagementTimer = setTimeout(trackEngagement, 3000);
+
+    // Trackear scroll para engagement
+    let scrollTracked = false;
+    const trackScroll = () => {
+      if (!scrollTracked && window.scrollY > 100) {
+        scrollTracked = true;
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('track', 'Scroll');
+        }
+      }
+    };
+
+    window.addEventListener('scroll', trackScroll);
 
     return () => {
       // Cleanup on unmount
       if (script.parentNode) script.parentNode.removeChild(script);
       if (noscript.parentNode) noscript.parentNode.removeChild(noscript);
+      clearTimeout(engagementTimer);
+      window.removeEventListener('scroll', trackScroll);
     };
   }, []);
 
@@ -267,6 +292,9 @@ function App() {
                 
                 // También trackear como Lead para mejor atribución
                 window.fbq('track', 'Lead');
+                
+                // Trackear como AddToCart para optimización de alcance
+                window.fbq('track', 'AddToCart');
                 
                 console.log('✅ Evento AgenciaRoyal enviado a Meta Pixel');
               } catch (error) {
