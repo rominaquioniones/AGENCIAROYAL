@@ -48,6 +48,29 @@ function App() {
 
   // Meta Pixel Code
   useEffect(() => {
+    // Función para verificar si Meta Pixel está listo
+    const isMetaPixelReady = () => {
+      return typeof window !== 'undefined' && 
+             window.fbq && 
+             typeof window.fbq === 'function';
+    };
+
+    // Función segura para trackear eventos
+    const safeTrack = (eventName: string, fallback?: () => void) => {
+      if (isMetaPixelReady()) {
+        try {
+          window.fbq('track', eventName);
+          console.log(`✅ Evento ${eventName} enviado correctamente`);
+        } catch (error) {
+          console.warn(`⚠️ Error enviando ${eventName}:`, error);
+          if (fallback) fallback();
+        }
+      } else {
+        console.warn(`⚠️ Meta Pixel no está listo para ${eventName}`);
+        if (fallback) fallback();
+      }
+    };
+
     const script = document.createElement('script');
     script.innerHTML = `
       !function(f,b,e,v,n,t,s)
@@ -75,9 +98,7 @@ function App() {
 
     // Trackear eventos de engagement para optimizar alcance
     const trackEngagement = () => {
-      if (typeof window !== 'undefined' && window.fbq) {
-        window.fbq('track', 'ViewContent');
-      }
+      safeTrack('ViewContent');
     };
 
     // Trackear después de 3 segundos (engagement)
@@ -88,9 +109,7 @@ function App() {
     const trackScroll = () => {
       if (!scrollTracked && window.scrollY > 100) {
         scrollTracked = true;
-        if (typeof window !== 'undefined' && window.fbq) {
-          window.fbq('track', 'Scroll');
-        }
+        safeTrack('Scroll');
       }
     };
 
@@ -285,24 +304,36 @@ function App() {
             e.preventDefault();
             
             // Trackear evento de Facebook Pixel con más información
-            if (typeof window !== 'undefined' && window.fbq) {
-              try {
-                // Trackear evento personalizado
-                window.fbq('trackCustom', 'AgenciaRoyal');
-                
-                // También trackear como Lead para mejor atribución
-                window.fbq('track', 'Lead');
-                
-                // Trackear como AddToCart para optimización de alcance
-                window.fbq('track', 'AddToCart');
-                
-                console.log('✅ Evento AgenciaRoyal enviado a Meta Pixel');
-              } catch (error) {
-                console.error('❌ Error enviando evento a Meta Pixel:', error);
+            const safeTrackCustom = (eventName: string) => {
+              if (typeof window !== 'undefined' && window.fbq && typeof window.fbq === 'function') {
+                try {
+                  window.fbq('trackCustom', eventName);
+                  console.log(`✅ Evento ${eventName} enviado correctamente`);
+                } catch (error) {
+                  console.error(`❌ Error enviando ${eventName}:`, error);
+                }
+              } else {
+                console.warn(`⚠️ Meta Pixel no está disponible para ${eventName}`);
               }
-            } else {
-              console.warn('⚠️ Meta Pixel no está disponible');
-            }
+            };
+
+            const safeTrack = (eventName: string) => {
+              if (typeof window !== 'undefined' && window.fbq && typeof window.fbq === 'function') {
+                try {
+                  window.fbq('track', eventName);
+                  console.log(`✅ Evento ${eventName} enviado correctamente`);
+                } catch (error) {
+                  console.error(`❌ Error enviando ${eventName}:`, error);
+                }
+              } else {
+                console.warn(`⚠️ Meta Pixel no está disponible para ${eventName}`);
+              }
+            };
+
+            // Trackear eventos de conversión
+            safeTrackCustom('AgenciaRoyal');
+            safeTrack('Lead');
+            safeTrack('AddToCart');
             
             // Trackear evento de Mixpanel
             const phoneNumber = getRandomWhatsAppNumber();
