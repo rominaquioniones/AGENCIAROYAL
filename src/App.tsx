@@ -255,15 +255,35 @@ function App() {
           href={`https://wa.me/549${getRandomWhatsAppNumber()}?text=${encodeURIComponent('Quiero mi bono del 50% y jugar♥')}`}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => {
-            // Trackear evento de Facebook Pixel
+          onClick={(e) => {
+            // Prevenir navegación inmediata para dar tiempo al tracking
+            e.preventDefault();
+            
+            // Trackear evento de Facebook Pixel con más información
             if (typeof window !== 'undefined' && window.fbq) {
-              window.fbq('trackCustom', 'AgenciaRoyal');
+              try {
+                // Trackear evento personalizado
+                window.fbq('trackCustom', 'AgenciaRoyal');
+                
+                // También trackear como Lead para mejor atribución
+                window.fbq('track', 'Lead');
+                
+                console.log('✅ Evento AgenciaRoyal enviado a Meta Pixel');
+              } catch (error) {
+                console.error('❌ Error enviando evento a Meta Pixel:', error);
+              }
+            } else {
+              console.warn('⚠️ Meta Pixel no está disponible');
             }
             
             // Trackear evento de Mixpanel
             const phoneNumber = getRandomWhatsAppNumber();
             trackWhatsAppClick(phoneNumber);
+            
+            // Navegar después de un pequeño delay para asegurar que se envíe el evento
+            setTimeout(() => {
+              window.open(`https://wa.me/549${phoneNumber}?text=${encodeURIComponent('Quiero mi bono del 50% y jugar♥')}`, '_blank');
+            }, 100);
           }}
           className={`bg-green-500 hover:bg-green-600 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl flex items-center flex-shrink-0 animate-bounce-in animate-pulse-scale ${
             isLowHeight 
