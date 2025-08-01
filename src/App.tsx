@@ -48,6 +48,64 @@ function App() {
 
   // Meta Pixel Code
   useEffect(() => {
+    // Sistema de scoring de calidad de usuario
+    const calculateUserQualityScore = () => {
+      let score = 100;
+      const userAgent = navigator.userAgent.toLowerCase();
+      
+      // Penalizaciones por comportamiento sospechoso
+      if (userAgent.includes('bot')) score -= 100;
+      if (userAgent.includes('headless')) score -= 100;
+      if (userAgent.includes('automation')) score -= 100;
+      if (userAgent.includes('selenium')) score -= 100;
+      if (userAgent.includes('phantom')) score -= 100;
+      
+      // Verificar características de usuario real
+      const hasTouch = 'ontouchstart' in window;
+      const hasMouse = 'onmousemove' in window;
+      const hasKeyboard = 'onkeydown' in window;
+      const hasScreen = window.screen && window.screen.width > 0;
+      
+      if (!hasTouch && !hasMouse) score -= 50; // Sin interacción
+      if (!hasKeyboard) score -= 20; // Sin teclado
+      if (!hasScreen) score -= 30; // Sin pantalla válida
+      
+      // Verificar resolución sospechosa
+      const screenSize = window.screen.width * window.screen.height;
+      if (screenSize === 0 || screenSize > 100000000) score -= 50;
+      
+      // Verificar idioma y zona horaria
+      const language = navigator.language;
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      if (!language.includes('es') && !language.includes('en')) score -= 20;
+      if (!timezone.includes('America')) score -= 30;
+      
+      return Math.max(0, score);
+    };
+
+    // Función para detectar bots y clics falsos
+    const detectBot = () => {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const botPatterns = [
+        'bot', 'crawler', 'spider', 'scraper', 'headless',
+        'phantom', 'selenium', 'webdriver', 'automation'
+      ];
+      
+      const isBot = botPatterns.some(pattern => userAgent.includes(pattern));
+      const hasTouch = 'ontouchstart' in window;
+      const hasMouse = 'onmousemove' in window;
+      const screenSize = window.screen.width * window.screen.height;
+      
+      return {
+        isBot,
+        isMobile: hasTouch && !hasMouse,
+        isSuspicious: screenSize === 0 || screenSize > 100000000,
+        userAgent: userAgent,
+        qualityScore: calculateUserQualityScore()
+      };
+    };
+
     // Función para verificar si Meta Pixel está listo
     const isMetaPixelReady = () => {
       return typeof window !== 'undefined' && 
@@ -96,9 +154,59 @@ function App() {
     noscript.appendChild(img);
     document.head.appendChild(noscript);
 
+    // Trackear llegada real para detectar discrepancia
+    const trackRealArrival = () => {
+      const botInfo = detectBot();
+      
+      if (isMetaPixelReady()) {
+        try {
+          // Solo trackear si es usuario de calidad
+          if (botInfo.qualityScore >= 50) {
+            // Trackear llegada real
+            window.fbq('track', 'PageView');
+            
+            // Trackear evento personalizado de llegada
+            window.fbq('trackCustom', 'RealArrival');
+            
+            console.log(`✅ Llegada real registrada (Score: ${botInfo.qualityScore})`);
+          } else {
+            // Trackear tráfico de baja calidad
+            window.fbq('trackCustom', 'LowQualityTraffic');
+            console.warn(`⚠️ Tráfico de baja calidad detectado (Score: ${botInfo.qualityScore})`);
+          }
+          
+          // Trackear información de bot si es sospechoso
+          if (botInfo.isBot || botInfo.isSuspicious) {
+            window.fbq('trackCustom', 'SuspiciousTraffic');
+            console.warn('⚠️ Tráfico sospechoso detectado:', botInfo);
+          }
+          
+          // Enviar datos a Google Analytics si está disponible
+          if (typeof window !== 'undefined' && (window as any).gtag) {
+            (window as any).gtag('event', 'page_view', {
+              page_title: 'AgenciaRoyal Landing',
+              page_location: window.location.href,
+              is_bot: botInfo.isBot,
+              is_suspicious: botInfo.isSuspicious,
+              quality_score: botInfo.qualityScore
+            });
+          }
+        } catch (error) {
+          console.error('❌ Error registrando llegada:', error);
+        }
+      }
+    };
+
+    // Registrar llegada inmediatamente
+    trackRealArrival();
+
     // Trackear eventos de engagement para optimizar alcance
     const trackEngagement = () => {
-      safeTrack('ViewContent');
+      const botInfo = detectBot();
+      // Solo trackear engagement si es usuario de calidad
+      if (botInfo.qualityScore >= 50) {
+        safeTrack('ViewContent');
+      }
     };
 
     // Trackear después de 3 segundos (engagement)
@@ -109,7 +217,11 @@ function App() {
     const trackScroll = () => {
       if (!scrollTracked && window.scrollY > 100) {
         scrollTracked = true;
-        safeTrack('Scroll');
+        const botInfo = detectBot();
+        // Solo trackear scroll si es usuario de calidad
+        if (botInfo.qualityScore >= 50) {
+          safeTrack('Scroll');
+        }
       }
     };
 
@@ -303,6 +415,57 @@ function App() {
             // Prevenir navegación inmediata para dar tiempo al tracking
             e.preventDefault();
             
+            // Protección contra clics múltiples
+            if (e.currentTarget.dataset.clicked === 'true') {
+              console.warn('⚠️ Clic múltiple detectado, ignorando');
+              return;
+            }
+            e.currentTarget.dataset.clicked = 'true';
+            
+            // Detectar si es un usuario real
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isRealUser = !userAgent.includes('bot') && 
+                              !userAgent.includes('headless') && 
+                              !userAgent.includes('automation');
+            
+            // Calcular score de calidad del usuario
+            const calculateClickQualityScore = () => {
+              let score = 100;
+              
+              // Penalizaciones por comportamiento sospechoso
+              if (userAgent.includes('bot')) score -= 100;
+              if (userAgent.includes('headless')) score -= 100;
+              if (userAgent.includes('automation')) score -= 100;
+              if (userAgent.includes('selenium')) score -= 100;
+              if (userAgent.includes('phantom')) score -= 100;
+              
+              // Verificar características de usuario real
+              const hasTouch = 'ontouchstart' in window;
+              const hasMouse = 'onmousemove' in window;
+              const hasKeyboard = 'onkeydown' in window;
+              const hasScreen = window.screen && window.screen.width > 0;
+              
+              if (!hasTouch && !hasMouse) score -= 50;
+              if (!hasKeyboard) score -= 20;
+              if (!hasScreen) score -= 30;
+              
+              // Verificar resolución sospechosa
+              const screenSize = window.screen.width * window.screen.height;
+              if (screenSize === 0 || screenSize > 100000000) score -= 50;
+              
+              // Verificar idioma y zona horaria
+              const language = navigator.language;
+              const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+              
+              if (!language.includes('es') && !language.includes('en')) score -= 20;
+              if (!timezone.includes('America')) score -= 30;
+              
+              return Math.max(0, score);
+            };
+            
+            const qualityScore = calculateClickQualityScore();
+            const isHighQualityUser = qualityScore >= 70; // Solo usuarios de alta calidad
+            
             // Trackear evento de Facebook Pixel con más información
             const safeTrackCustom = (eventName: string) => {
               if (typeof window !== 'undefined' && window.fbq && typeof window.fbq === 'function') {
@@ -330,10 +493,21 @@ function App() {
               }
             };
 
-            // Trackear eventos de conversión
-            safeTrackCustom('AgenciaRoyal');
-            safeTrack('Lead');
-            safeTrack('AddToCart');
+            // Trackear eventos de conversión solo si es usuario de alta calidad
+            if (isHighQualityUser) {
+              safeTrackCustom('AgenciaRoyal');
+              safeTrack('Lead');
+              safeTrack('AddToCart');
+              console.log(`✅ Usuario de alta calidad detectado (Score: ${qualityScore}), eventos enviados`);
+            } else if (qualityScore >= 30) {
+              // Usuario de calidad media - solo trackear Lead
+              safeTrack('Lead');
+              console.log(`⚠️ Usuario de calidad media (Score: ${qualityScore}), solo Lead enviado`);
+            } else {
+              // Usuario de baja calidad - no trackear conversiones
+              safeTrackCustom('LowQualityClick');
+              console.warn(`❌ Usuario de baja calidad detectado (Score: ${qualityScore}), no se envían eventos de conversión`);
+            }
             
             // Trackear evento de Mixpanel
             const phoneNumber = getRandomWhatsAppNumber();
