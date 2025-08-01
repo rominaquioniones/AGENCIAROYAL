@@ -422,11 +422,11 @@ function App() {
             }
             e.currentTarget.dataset.clicked = 'true';
             
-            // Detectar si es un usuario real
+            // Detectar si es un usuario real (para referencia)
             const userAgent = navigator.userAgent.toLowerCase();
-            const isRealUser = !userAgent.includes('bot') && 
-                              !userAgent.includes('headless') && 
-                              !userAgent.includes('automation');
+            // const isRealUser = !userAgent.includes('bot') && 
+            //                   !userAgent.includes('headless') && 
+            //                   !userAgent.includes('automation');
             
             // Calcular score de calidad del usuario
             const calculateClickQualityScore = () => {
