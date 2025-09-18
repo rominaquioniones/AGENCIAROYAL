@@ -1,36 +1,112 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/src/assets/descarga.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Royal Agency Oficial</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+      .container {
+        text-align: center;
+        max-width: 600px;
+        padding: 20px;
+      }
+      .logo {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #ffd700;
+      }
+      .verified {
+        background: rgba(0, 255, 0, 0.1);
+        border: 2px solid #00ff00;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 20px 0;
+      }
+      .whatsapp-btn {
+        background: #25d366;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 50px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin: 20px 0;
+        transition: all 0.3s ease;
+      }
+      .whatsapp-btn:hover {
+        background: #128c7e;
+        transform: scale(1.05);
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+      .feature {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+      }
+    </style>
     <script>
-      // Número de WhatsApp configurado: 2236751421
+      // NÚMERO DE WHATSAPP: 2236751421
       const WHATSAPP_NUMBER = '2236751421';
       const WHATSAPP_MESSAGE = 'Quiero mi bono del 50% y jugar♥';
       
-      // Función para redirigir a WhatsApp
       function redirectToWhatsApp() {
         const url = `https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
         window.open(url, '_blank');
       }
-      
-      // Aplicar la función a todos los botones de WhatsApp
-      document.addEventListener('DOMContentLoaded', function() {
-        const whatsappButtons = document.querySelectorAll('a[href*="wa.me"]');
-        whatsappButtons.forEach(button => {
-          button.href = `https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
-          button.onclick = function(e) {
-            e.preventDefault();
-            redirectToWhatsApp();
-          };
-        });
-      });
     </script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div class="container">
+      <div class="logo">👑 AGENCIA ROYAL</div>
+      
+      <div class="verified">
+        <p>✔ Plataforma Verificada ✓</p>
+        <p><strong>Casino de Confianza</strong></p>
+        <p>Te estamos conectando con nuestro equipo vía WhatsApp.</p>
+      </div>
+      
+      <button class="whatsapp-btn" onclick="redirectToWhatsApp()">
+        ¡QUIERO MI BONO!
+      </button>
+      
+      <p>+1.000 CLIENTES GANANDO todos los días</p>
+      
+      <div class="features">
+        <div class="feature">
+          <h3>🕐 ATENCIÓN 24/7</h3>
+        </div>
+        <div class="feature">
+          <h3>🎁 PREMIOS AL INSTANTE</h3>
+        </div>
+        <div class="feature">
+          <h3>💳 ACEPTAMOS TRANSFERENCIAS</h3>
+        </div>
+        <div class="feature">
+          <h3>🔒 100% SEGURO</h3>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
