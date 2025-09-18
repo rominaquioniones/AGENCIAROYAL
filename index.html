@@ -5,6 +5,37 @@
     <link rel="icon" type="image/png" href="/src/assets/descarga.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Royal Agency Oficial</title>
+    <script>
+      // NÚMERO DE WHATSAPP: 2236751421
+      const WHATSAPP_NUMBER = '2236751421';
+      const WHATSAPP_MESSAGE = 'Quiero mi bono del 50% y jugar♥';
+      
+      // Interceptar TODOS los clics en enlaces de WhatsApp
+      document.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A' && e.target.href && e.target.href.includes('wa.me')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const url = `https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+          window.open(url, '_blank');
+          return false;
+        }
+      });
+      
+      // También interceptar cuando se carga la página
+      window.addEventListener('load', function() {
+        const allLinks = document.querySelectorAll('a');
+        allLinks.forEach(link => {
+          if (link.href && link.href.includes('wa.me')) {
+            link.href = `https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+            link.onclick = function(e) {
+              e.preventDefault();
+              window.open(`https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`, '_blank');
+              return false;
+            };
+          }
+        });
+      });
+    </script>
   </head>
   <body>
     <div id="root"></div>
