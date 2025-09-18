@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-// Función para obtener número de WhatsApp aleatorio
+// Función para obtener número de WhatsApp aleatorio - ACTUALIZADO
 const getRandomWhatsAppNumber = (): string => {
   const numbers = ['2236751421'];
   const randomIndex = Math.floor(Math.random() * numbers.length);
