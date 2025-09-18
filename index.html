@@ -7,8 +7,26 @@
     <title>Royal Agency Oficial</title>
     <script>
       // Número de WhatsApp configurado: 2236751421
-      window.WHATSAPP_NUMBER = '2236751421';
-      window.WHATSAPP_MESSAGE = 'Quiero mi bono del 50% y jugar♥';
+      const WHATSAPP_NUMBER = '2236751421';
+      const WHATSAPP_MESSAGE = 'Quiero mi bono del 50% y jugar♥';
+      
+      // Función para redirigir a WhatsApp
+      function redirectToWhatsApp() {
+        const url = `https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+        window.open(url, '_blank');
+      }
+      
+      // Aplicar la función a todos los botones de WhatsApp
+      document.addEventListener('DOMContentLoaded', function() {
+        const whatsappButtons = document.querySelectorAll('a[href*="wa.me"]');
+        whatsappButtons.forEach(button => {
+          button.href = `https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+          button.onclick = function(e) {
+            e.preventDefault();
+            redirectToWhatsApp();
+          };
+        });
+      });
     </script>
   </head>
   <body>
