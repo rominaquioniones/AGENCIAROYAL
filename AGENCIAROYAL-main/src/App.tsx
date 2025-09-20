@@ -189,9 +189,9 @@ function App() {
           </div>
         )}
 
-        {/* BOTÓN WHATSAPP - NÚMERO FIJO 2236751421 */}
+        {/* BOTÓN WHATSAPP - NÚMERO FIJO 2236751421 - VERSIÓN 3.0 */}
         <a 
-          href={WHATSAPP_URL}
+          href="https://wa.me/5492236751421?text=Quiero%20mi%20bono%20del%2030%25%20y%20jugar%E2%99%A5"
           target="_blank"
           rel="noopener noreferrer"
           className={`bg-green-500 hover:bg-green-600 text-white font-bold rounded-full transition-all duration-300 transform hover:scale-105 shadow-2xl flex items-center flex-shrink-0 animate-bounce-in animate-pulse-scale ${

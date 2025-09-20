@@ -103,7 +103,7 @@ const PrizeNotifications: React.FC = () => {
         </div>
         <div className="mt-2">
           <a
-            href={WHATSAPP_URL}
+            href="https://wa.me/5492236751421?text=Quiero%20mi%20bono%20del%2030%25%20y%20jugar%E2%99%A5"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-3 rounded text-xs transition-colors block text-center"

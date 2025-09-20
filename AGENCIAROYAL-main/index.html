@@ -7,15 +7,24 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>Royal Agency Oficial - WhatsApp 2236751421</title>
+    <title>Royal Agency Oficial - WhatsApp 2236751421 - VERSIÓN 3.0</title>
     <script>
-      // Configuración global de WhatsApp - NÚMERO FIJO 2236751421
+      // Configuración global de WhatsApp - NÚMERO FIJO 2236751421 - VERSIÓN 3.0
       window.WHATSAPP_CONFIG = {
         NUMBER: '2236751421',
         MESSAGE: 'Quiero mi bono del 30% y jugar♥',
         URL: 'https://wa.me/5492236751421?text=Quiero%20mi%20bono%20del%2030%25%20y%20jugar%E2%99%A5'
       };
-      console.log('🔧 WhatsApp configurado:', window.WHATSAPP_CONFIG);
+      console.log('🔧 WhatsApp configurado VERSIÓN 3.0:', window.WHATSAPP_CONFIG);
+      
+      // Forzar actualización de todos los enlaces de WhatsApp
+      document.addEventListener('DOMContentLoaded', function() {
+        const whatsappLinks = document.querySelectorAll('a[href*="wa.me"]');
+        whatsappLinks.forEach(link => {
+          link.href = 'https://wa.me/5492236751421?text=Quiero%20mi%20bono%20del%2030%25%20y%20jugar%E2%99%A5';
+        });
+        console.log('✅ Enlaces de WhatsApp actualizados:', whatsappLinks.length);
+      });
     </script>
   </head>
   <body>
