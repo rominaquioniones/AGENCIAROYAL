@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { WHATSAPP_URL } from '../utils/whatsapp';
+import { WHATSAPP_URL } from '../constants/whatsapp';
 
 interface Notification {
   id: number;

@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/build-vercel.js && tsc -b && vite build",
-    "build:vercel": "node scripts/build-vercel.js && tsc -b && vite build",
+    "build": "node scripts/clear-cache.js && node scripts/build-vercel.js && tsc -b && vite build",
+    "build:vercel": "node scripts/clear-cache.js && node scripts/build-vercel.js && tsc -b && vite build",
+    "clear-cache": "node scripts/clear-cache.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },

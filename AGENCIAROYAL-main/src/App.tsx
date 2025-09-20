@@ -2,13 +2,16 @@ import FallingParticles from './components/FallingParticles';
 import PrizeNotifications from './components/PrizeNotifications';
 import logoImage from './assets/descarga.png';
 import { useState, useEffect } from 'react';
-import { WHATSAPP_URL } from './utils/whatsapp';
+import { WHATSAPP_URL, verifyWhatsAppConfig } from './constants/whatsapp';
 
 function App() {
   const [isLowHeight, setIsLowHeight] = useState(false);
   const [isNotebook, setIsNotebook] = useState(false);
 
   useEffect(() => {
+    // Verificar configuración de WhatsApp
+    verifyWhatsAppConfig();
+    
     const checkDimensions = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
