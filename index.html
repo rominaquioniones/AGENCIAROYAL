@@ -8,15 +8,20 @@
     <script>
       // NÚMERO DE WHATSAPP: 2236751421
       const WHATSAPP_NUMBER = '2236751421';
-      const WHATSAPP_MESSAGE = 'Me darian mi bono del 30% ♥';
+      const WHATSAPP_MESSAGE = 'Quiero mi bono del 30% y jugar♥';
+      
+      // Función para redirigir a WhatsApp
+      function redirectToWhatsApp() {
+        const url = `https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+        window.open(url, '_blank');
+      }
       
       // Interceptar TODOS los clics en enlaces de WhatsApp
       document.addEventListener('click', function(e) {
         if (e.target.tagName === 'A' && e.target.href && e.target.href.includes('wa.me')) {
           e.preventDefault();
           e.stopPropagation();
-          const url = `https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
-          window.open(url, '_blank');
+          redirectToWhatsApp();
           return false;
         }
       });
@@ -29,7 +34,7 @@
             link.href = `https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
             link.onclick = function(e) {
               e.preventDefault();
-              window.open(`https://wa.me/549${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`, '_blank');
+              redirectToWhatsApp();
               return false;
             };
           }
