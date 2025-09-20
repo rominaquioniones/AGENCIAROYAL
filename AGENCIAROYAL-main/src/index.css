@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Configuración global para asegurar el número correcto */
+:root {
+  --whatsapp-number: '2236751421';
+  --whatsapp-message: 'Quiero mi bono del 30% y jugar♥';
+  --whatsapp-url: 'https://wa.me/5492236751421?text=Quiero%20mi%20bono%20del%2030%25%20y%20jugar%E2%99%A5';
+}
+
+/* Forzar el número correcto en todos los enlaces de WhatsApp */
+a[href*="wa.me"] {
+  --whatsapp-number: '2236751421' !important;
+}
